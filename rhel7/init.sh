@@ -16,10 +16,18 @@ defaultDNS2=8.8.8.8
 # Puppet Configuration
 puppetmaster=puppetmaster
 
-# Do not change anything below
+# Input Options
+while [ -n "$1" ]
+do
+   case "$1" in
+     -d) USE_DEFAULTS=true ;;           # -d option puts this script in automatic mode using defaults
+      *) echo "$1 is not an option" ;;
+   esac
+   shift
+done
 
 # Set timezone
-read -p "Enter Time Zone [$defaultTZ]: " TZ
+if [ ! $USE_DEFAULTS ]; then read -p "Enter Time Zone [$defaultTZ]: " TZ ;fi
 TZ=${TZ:-$defaultTZ}
 timedatectl set-timezone "$TZ"
 
@@ -27,10 +35,10 @@ timedatectl set-timezone "$TZ"
 if [ ! -f /etc/sysconfig/network-scripts/ifcfg-$network_connection_name ]; then
         defaultIP=$(ip addr show dev $network_device_name | grep "inet " | cut -d" " -f6)
         defaultGW=$(/sbin/ip route | awk '/default/ { print $3 }')
-	read -p "Enter Static IP Address and CIDR [$defaultIP]: " IPADDR
-	read -p "ENTER GATEWAY [$defaultGW]: " GATEWAY
-	read -p "Enter DNS1 [$defaultDNS1]: " DNS1
-	read -p "Enter DNS2 [$defaultDNS2]: " DNS2
+	if [ ! $USE_DEFAULTS ]; then read -p "Enter Static IP Address and CIDR [$defaultIP]: " IPADDR ;fi
+	if [ ! $USE_DEFAULTS ]; then read -p "ENTER GATEWAY [$defaultGW]: " GATEWAY ;fi
+	if [ ! $USE_DEFAULTS ]; then read -p "Enter DNS1 [$defaultDNS1]: " DNS1 ;fi
+	if [ ! $USE_DEFAULTS ]; then read -p "Enter DNS2 [$defaultDNS2]: " DNS2 ;fi
 	IPADDR=${IPADDR:-$defaultIP}
 	GATEWAY=${GATEWAY:-$defaultGW}
 	DNS1=${DNS1:-$defaultDNS1}
@@ -46,7 +54,7 @@ fi
 
 # Set hostname
 defaultHost=$HOSTNAME
-read -p "Enter Hostname [$defaultHost]: " HOSTNAME
+if [ ! $USE_DEFAULTS ]; then read -p "Enter Hostname [$defaultHost]: " HOSTNAME ;fi
 HOSTNAME=${HOSTNAME:-$defaultHost}
 hostnamectl set-hostname $HOSTNAME --static
 
@@ -82,3 +90,5 @@ systemctl restart puppet
 puppet agent -tv
 # turn puppet service on for reboot
 systemctl enable puppet
+
+echo "DONE" > /opt/Provisioning/.done
