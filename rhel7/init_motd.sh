@@ -47,9 +47,9 @@ echo -e "${WHITE} Swap Free:    ${SWAPFREE}"
 echo -e ""
 echo -e "${RED}******************************************************************************"
 
-if [ ! -f /opt/company/init.done ]; then
+if [ ! -f /opt/Provisioning/.done ]; then
 echo -e "${YELLOW}Please run the follwing command to configure this system for the first time:"
-echo -e "${YELLOW} => sh /opt/company/init.sh"
+echo -e "${YELLOW} => sh /opt/Provisioning/rhel7/init.sh"
 fi
 
 # Reset Terminal Colour Back to Normal
