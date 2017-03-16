@@ -11,9 +11,7 @@ rhn_subscription_password=PassWord
 # Network configuration
 network_device_name=eth0
 network_connection_name=RHEL7
-defaultIP=192.168.1.100/24
-defaultGW=192.168.1.1
-defaultDNS1=192.168.1.1
+defaultDNS1=8.8.8.8
 defaultDNS2=8.8.8.8
 # Puppet Configuration
 puppetmaster=puppetmaster
@@ -27,6 +25,8 @@ timedatectl set-timezone "$TZ"
 
 # Set Static IP Info - only runs once
 if [ ! -f /etc/sysconfig/network-scripts/ifcfg-$network_connection_name ]; then
+        defaultIP=$(ip addr show dev $network_device_name | grep "inet " | cut -d" " -f6)
+        defaultGW=$(/sbin/ip route | awk '/default/ { print $3 }')
 	read -p "Enter Static IP Address and CIDR [$defaultIP]: " IPADDR
 	read -p "ENTER GATEWAY [$defaultGW]: " GATEWAY
 	read -p "Enter DNS1 [$defaultDNS1]: " DNS1
@@ -45,7 +45,7 @@ if [ ! -f /etc/sysconfig/network-scripts/ifcfg-$network_connection_name ]; then
 fi
 
 # Set hostname
-defaultHost=rhel7.local
+defaultHost=$HOSTNAME
 read -p "Enter Hostname [$defaultHost]: " HOSTNAME
 HOSTNAME=${HOSTNAME:-$defaultHost}
 hostnamectl set-hostname $HOSTNAME --static
