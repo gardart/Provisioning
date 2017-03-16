@@ -31,13 +31,15 @@ MEMTOTAL=$(cat /proc/meminfo | grep -m 1 -w 'MemTotal' | awk -F: '{print $2}')
 MEMFREE=$(cat /proc/meminfo | grep -m 1 -w 'MemFree' | awk -F: '{print $2}')
 SWAPTOTAL=$(cat /proc/meminfo | grep -m 1 -w 'SwapTotal' | awk -F: '{print $2}')
 SWAPFREE=$(cat /proc/meminfo | grep -m 1 -w 'SwapFree' | awk -F: '{print $2}')
+IPADDRESS=$(ip addr show dev $network_device_name | grep "inet " | cut -d" " -f6)
+GATEWAY=$(/sbin/ip route | awk '/default/ { print $3 }')
 
 echo -e "${RED}******************************************************************************"
+echo -e "${WHITE} Hostname:   ${HOSTNAME}"
 echo -e "${WHITE} Date: "`date`
 echo -e ""
-
-echo -e "${WHITE} Hostname:   ${HOSTNAME}"
-echo -e "${WHITE} CPU Model: ${CPUMOD}"
+echo -e "${CYAN} IP Address: ${IPADDRESS}"
+echo -e "${CYAN} Gateway: ${GATEWAY}"
 echo -e ""
 echo -e "${WHITE} Total Memory: ${MEMTOTAL}"
 echo -e "${WHITE} Free Memory: ${MEMFREE}"

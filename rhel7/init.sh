@@ -1,9 +1,8 @@
 #!/bin/sh
-
+# Maintained by gardart@gmail.com
 #
+
 # Variables to change
-#
-
 defaultTZ=Atlantic/Reykjavik
 # RedHat Subscription Manager
 rhn_subscription_user=username@domain.com
@@ -15,6 +14,7 @@ defaultDNS1=8.8.8.8
 defaultDNS2=8.8.8.8
 # Puppet Configuration
 puppetmaster=puppetmaster
+USE_DEFAULTS=
 
 # Input Options
 while [ -n "$1" ]
@@ -61,8 +61,6 @@ hostnamectl set-hostname $HOSTNAME --static
 # Register system
 subscription-manager register --username=$rhn_subscription_user --password=$rhn_subscription_password --auto-attach
 subscription-manager repos --enable=rhel-7-server-extras-rpms
-subscription-manager repos --enable=rhel-7-server-extras-rpms
-subscription-manager repos --enable=rhel-7-server-optional-rpms
 subscription-manager repos --enable=rhel-7-server-optional-rpms
 
 # Update all packages
