@@ -35,17 +35,17 @@ IPADDRESS=$(ip addr show | grep -v 127.0.0.1 | grep "inet " | cut -d" " -f6)
 GATEWAY=$(/sbin/ip route | awk '/default/ { print $3 }')
 
 echo -e "${RED}******************************************************************************"
-echo -e "${WHITE} Hostname:   ${HOSTNAME}"
-echo -e "${WHITE} Date: "`date`
+echo -e "${WHITE} Hostname: \t\t${HOSTNAME}"
+echo -e "${WHITE} Date: \t\t\t"`date`
 echo -e ""
-echo -e "${CYAN} IP Address: ${IPADDRESS}"
-echo -e "${CYAN} Gateway: ${GATEWAY}"
+echo -e "${CYAN} IP Address: \t\t${IPADDRESS}"
+echo -e "${CYAN} Gateway: \t\t${GATEWAY}"
 echo -e ""
-echo -e "${WHITE} Total Memory: ${MEMTOTAL}"
-echo -e "${WHITE} Free Memory: ${MEMFREE}"
+echo -e "${WHITE} Total Memory: \t\t${MEMTOTAL}"
+echo -e "${WHITE} Free Memory: \t\t${MEMFREE}"
 echo -e ""
-echo -e "${WHITE} Swap Total:    ${SWAPTOTAL}"
-echo -e "${WHITE} Swap Free:    ${SWAPFREE}"
+echo -e "${WHITE} Swap Total: \t${SWAPTOTAL}"
+echo -e "${WHITE} Swap Free: \t${SWAPFREE}"
 echo -e ""
 echo -e "${RED}******************************************************************************"
 
