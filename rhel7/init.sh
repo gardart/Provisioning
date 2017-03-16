@@ -26,7 +26,7 @@ TZ=${TZ:-$defaultTZ}
 timedatectl set-timezone "$TZ"
 
 # Set Static IP Info - only runs once
-if [ ! -f /etc/sysconfig/network-scripts/ifcfg-rhel7 ]; then
+if [ ! -f /etc/sysconfig/network-scripts/ifcfg-$network_connection_name ]; then
 	read -p "Enter Static IP Address and CIDR [$defaultIP]: " IPADDR
 	read -p "ENTER GATEWAY [$defaultGW]: " GATEWAY
 	read -p "Enter DNS1 [$defaultDNS1]: " DNS1
@@ -75,7 +75,7 @@ yum install -y nmap sed git
 rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
 yum -t -y -e 0 install puppet
 # Add puppet master to puppet.conf
-sed -i '/\[agent\]/ a\    server = $puppetmaster' /etc/puppet/puppet.conf
+sed -i '/\[agent\]/ a\    server = '"$puppetmaster"'' /etc/puppet/puppet.conf
 # Restart Puppet agent
 systemctl restart puppet
 # generate puppet certificates and trigger a signing request
